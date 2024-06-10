@@ -1,0 +1,4 @@
+# mybotshop:
+h1_isaac_controller:
+  ros__parameters:
+    robot_topic: '/a200_1045/platform/odom'
