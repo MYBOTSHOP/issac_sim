@@ -4,6 +4,10 @@
 > Applicable for Ubuntu 22.04 and ROS2 Humble and Isaac Sim 4.0.0
 
 
+## Documentations
+
+- [Isaac Labs](https://isaac-sim.github.io/IsaacLab/source/setup/installation/index.html)
+
 ## Installation Instruction
 
 - [Nvidia Issac Sim Compatibility](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/requirements.html)
@@ -46,7 +50,7 @@ bash ~/.local/share/ov/pkg/isaac-sim-4.0.0/isaac-sim.sh
 ```
 
 - Go to `Windows` -> `Extension Manager` -> Enable `ROS2 Bridge` & `ROS2 Robot Description URDF`
-- Go to `Create` -> `Isaac` -> `Environment` -> `Flat Grid`
+- Go to `Create` -> `Isaac` -> `Environment` -> `Grid Room`
 
 ## ROS2 - Importing Robot 
 
@@ -60,8 +64,19 @@ bash ~/.local/share/ov/pkg/isaac-sim-4.0.0/isaac-sim.sh
 
 ## ROS2 - Robot Controller 
 
-- Click `Issac Utils` -> `Common Omnigraph` -> `Articulation Position Controller` and/or `Articulation Velocity Controller`
+- Click `Issac Utils` -> `Common Omnigraph` -> **Articulation Position Controller** and/or **Articulation Velocity Controller**
   - Press `Add` and select the `robot`
   - Click `Ok`
   - Right Click on the `Graphs` in the Stage and select option `Open Graphs`
 - Click Play and in the graphs, one of them will be a controller graph change values to see if it is reflected on robot
+- Add the following to the graphs
+  - **On Playback Tick node** 
+  - **Isaac Read Simulation Time node** 
+  - **ROS2 Publish Joint State node**
+    - Connect On **On Playback Tick** from `Tick` to `Exec In`
+    - Connect On **Isaac Read Simulation Time node** from `Simulation Time` to `Timestamp`
+  - **ROS2 Subscribe Joint State node**
+    - Connect On **On Playback Tick** from `Tick` to `Exec In`
+  - **ROS2 Nodes**
+    - Connect `Effort Command`, `Joint Names`, `Position Command`, etc.
+  - Click play and run `ros2 launch h1_isaac_controller system.launch.py` for incremental steps to move the robot
